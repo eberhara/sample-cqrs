@@ -1,0 +1,11 @@
+zookeeper:
+  image: spotify/kafka
+  container_name: kafka
+  restart: unless-stopped
+  ports:
+    - "2181:2181"
+    - "9092:9092"
+  environment:
+    ADVERTISED_HOST: 10.0.2.15
+    ADVERTISED_PORT: 9092
+
