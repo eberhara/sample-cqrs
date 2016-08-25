@@ -1,17 +1,25 @@
 const Kafka = require("kafka-node");
 
-// Creating connection to kafka broker
-const producer = new Kafka.Producer(new Kafka.Client("localhost:2181"), { requireAcks: 1 });
+/* Kafka connection parameters */
 const topic = "topic1";
 const partition = 0;
 const attributes = 0;
+const requireAcks = 1
+const kafkaAddress = "localhost:2181";
 
-const event = {
-    batata: 1,
-    laranja: 2,
-};
+/* Connects to kafka broker */
+const producer = new Kafka.Producer(new Kafka.Client(kafkaAddress), { requireAcks });
 
-producer.on("ready", () => {
+producer.on("ready", (err) => {
+    console.log(err || "Connected to kafka");
+});
+
+producer.on("error", (err) => {
+    console.log("error", err);
+});
+
+/* Event Pubisher */
+const publish = (event, cb) => {
     const message = {
         topic,
         partition,
@@ -19,14 +27,8 @@ producer.on("ready", () => {
         attributes,
     };
 
-    producer.send(
-        [message], (err, result) => {
-            console.log(err || result);
-            process.exit();
-        }
-    );
-});
+    producer.send([message], cb);
+}
 
-producer.on("error", (err) => {
-    console.log("error", err);
-});
+module.exports = producer;
+module.exports.publish = publish;
