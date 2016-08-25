@@ -1,33 +1,18 @@
 
-const Kafka = require("kafka-node");
+const restify = require('restify');
 
-// Creating connection to kafka broker
-const producer = new Kafka.Producer(new Kafka.Client("localhost:2181"), { requireAcks: 1 });
-const topic = "topic1";
-const partition = 0;
-const attributes = 0;
-
-const event = {
-    batata: 1,
-    laranja: 2,
-};
-
-producer.on("ready", () => {
-    const message = {
-        topic,
-        partition,
-        messages: JSON.stringify(event),
-        attributes,
-    };
-
-    producer.send(
-        [message], (err, result) => {
-            console.log(err || result);
-            process.exit();
-        }
-    );
+const server = restify.createServer({
+    name: "kafka-producer",
+    version: "1.0.0"
 });
 
-producer.on("error", (err) => {
-    console.log("error", err);
+//server.post('/produce', null);
+server.get('/status', (req, res) => {
+    res.send(200, 'ok');
 });
+
+server.listen("8081", "127.0.0.1", () => {
+    console.log("Server listening on 8081");
+});
+
+module.exports = server;
