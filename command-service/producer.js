@@ -10,6 +10,8 @@ const kafkaAddress = process.env.NODE_ENV === 'production' ?
 	"kafka:2181" :
 	"localhost:2181";
 
+console.log(kafkaAddress);
+
 /* Connects to kafka broker */
 const producer = new Kafka.Producer(new Kafka.Client(kafkaAddress), { requireAcks });
 

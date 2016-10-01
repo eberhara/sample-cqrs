@@ -1,0 +1,23 @@
+{
+  "name": "query-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "eslint **/*.js; npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.1",
+    "mongodb": "^2.2.10",
+    "restify": "^4.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.3.1",
+    "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-plugin-import": "^1.14.0"
+  }
+}

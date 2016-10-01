@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock 
 
   command-service:
-    container_name: command_service
+    container_name: command-service
     restart: unless-stopped
     build: 
       context: ./command-service
@@ -30,6 +30,25 @@ services:
     links:
       - mongo-command
       - kafka
+
+  query-service:
+    container_name: query-service
+    restart: unless-stopped
+    build: 
+      context: ./query-service
+    ports:
+      - 3100:3100
+    links:
+      - mongo-query
+  
+  kafka-consumer:
+    container_name: kafka-consumer
+    restart: unless-stopped
+    build: 
+      context: ./kafka-consumer
+    links:
+      - kafka
+      - mongo-query
 
   kafka:
     image: spotify/kafka
@@ -40,7 +59,7 @@ services:
       - "9092:9092"
     environment:
       ADVERTISED_PORT: 9092
-      ADVERTISED_HOST: kafka
+      ADVERTISED_HOST: 127.0.0.1
 
   mongo-command:
     image: mongo

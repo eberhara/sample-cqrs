@@ -4,6 +4,6 @@ MAINTAINER Andre Eberhardt
 ENV NODE_ENV=production
 ADD . /app
 
-EXPOSE  3000
+EXPOSE  3100
 
 CMD [ "npm", "start" ]

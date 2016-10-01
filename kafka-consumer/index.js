@@ -1,6 +1,9 @@
 const Kafka = require("kafka-node");
+const kafkaAddress = process.env.NODE_ENV === 'production' ?
+    "kafka:2181" :
+    "localhost:2181";
 
-const client = new Kafka.Client("localhost:2181");
+const client = new Kafka.Client(kafkaAddress);
 const topics = [{ topic: "topic1", partition: 0 }];
 const options = { autoCommit: false, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024 * 1024 };
 
