@@ -16,10 +16,10 @@ class AddTodo extends React.Component {
 
     onAddItem(event) {
         if(this.state.todo){
-            fetch('http://localhost:3000', 
+            fetch('http://localhost:3000/todos',
                 { 
                     method: 'POST', 
-                    body : JSON.stringify({ todo: this.state.todo }),
+                    body : JSON.stringify({ text: this.state.todo }),
                 }
                 ).then(response => response.json())
             .then(result => console.log("foooi"))

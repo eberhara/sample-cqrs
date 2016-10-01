@@ -10,7 +10,7 @@ const offset = new Kafka.Offset(client);
 consumer.on("message", (message) => {
     var a = JSON.parse(message.value);
     if(a){
-        console.log("aaaaaaaa", a.todo);
+        console.log("aaaaaaaa", a.text, a.id);
     }
 });
 
