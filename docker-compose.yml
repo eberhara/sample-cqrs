@@ -33,6 +33,24 @@ services:
       ADVERTISED_PORT: 9092
       ADVERTISED_HOST: 127.0.0.1
 
+  mongo_command:
+    image: mongo
+    container_name: mongo_command
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    networks:
+      - back-tier
+
+  mongo_query:
+    image: mongo
+    container_name: mongo_query
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    networks:
+      - back-tier
+
 networks:
   front-tier:
     driver: bridge
