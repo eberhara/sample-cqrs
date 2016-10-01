@@ -1,11 +1,40 @@
-zookeeper:
-  image: spotify/kafka
-  container_name: kafka
-  restart: unless-stopped
-  ports:
-    - "2181:2181"
-    - "9092:9092"
-  environment:
-    ADVERTISED_HOST: 10.0.2.15
-    ADVERTISED_PORT: 9092
+version: '2'
+services:
+  web:
+    image: dockercloud/hello-world
+    ports:
+      - 8080
+    networks:
+      - front-tier
+      - back-tier
 
+  lb:
+    image: dockercloud/haproxy
+    ports:
+      - 80:80
+    links:
+      - web
+    networks:
+      - front-tier
+      - back-tier
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+
+  kafka:
+    image: spotify/kafka
+    container_name: kafka
+    restart: unless-stopped
+    networks:
+      - back-tier
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    environment:
+      ADVERTISED_PORT: 9092
+      ADVERTISED_HOST: 127.0.0.1
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
