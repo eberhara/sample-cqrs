@@ -21,9 +21,8 @@ class AddTodo extends React.Component {
                     method: 'POST', 
                     body : JSON.stringify({ text: this.state.todo }),
                 }
-                ).then(response => response.json())
-            .then(result => console.log("foooi"))
-            .catch(() => console.log("EROOOOOO"));
+            ).then(this.setState({ todo: '' }))
+            .catch(() => console.log('Error'));
         }
         
     }

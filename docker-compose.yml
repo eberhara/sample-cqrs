@@ -20,36 +20,41 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock 
 
+  command-service:
+    container_name: command_service
+    restart: unless-stopped
+    build: 
+      context: ./command-service
+    ports:
+      - 3000:3000
+    links:
+      - mongo-command
+      - kafka
+
   kafka:
     image: spotify/kafka
     container_name: kafka
     restart: unless-stopped
-    networks:
-      - back-tier
     ports:
       - "2181:2181"
       - "9092:9092"
     environment:
       ADVERTISED_PORT: 9092
-      ADVERTISED_HOST: 127.0.0.1
+      ADVERTISED_HOST: kafka
 
-  mongo_command:
+  mongo-command:
     image: mongo
-    container_name: mongo_command
+    container_name: mongo-command
     restart: unless-stopped
     ports:
       - "27017:27017"
-    networks:
-      - back-tier
 
-  mongo_query:
+  mongo-query:
     image: mongo
-    container_name: mongo_query
+    container_name: mongo-query
     restart: unless-stopped
     ports:
       - "27018:27017"
-    networks:
-      - back-tier
 
 networks:
   front-tier:

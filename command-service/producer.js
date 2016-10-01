@@ -5,7 +5,10 @@ const topic = "topic1";
 const partition = 0;
 const attributes = 0;
 const requireAcks = 1;
-const kafkaAddress = "localhost:2181";
+
+const kafkaAddress = process.env.NODE_ENV === 'production' ?
+	"kafka:2181" :
+	"localhost:2181";
 
 /* Connects to kafka broker */
 const producer = new Kafka.Producer(new Kafka.Client(kafkaAddress), { requireAcks });

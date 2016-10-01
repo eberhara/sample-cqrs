@@ -45,7 +45,7 @@ server.post('/todos', (req, res, next) => {
 });
 
 /* Starts webserver */
-server.listen("3000", "127.0.0.1", () => {
+server.listen("3000", () => {
     console.log("Server listening on 3000");
 });
 module.exports = server;
