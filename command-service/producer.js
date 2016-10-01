@@ -4,7 +4,7 @@ const Kafka = require("kafka-node");
 const topic = "topic1";
 const partition = 0;
 const attributes = 0;
-const requireAcks = 1
+const requireAcks = 1;
 const kafkaAddress = "localhost:2181";
 
 /* Connects to kafka broker */
@@ -28,7 +28,7 @@ const publish = (event, cb) => {
     };
 
     producer.send([message], cb);
-}
+};
 
 module.exports = producer;
 module.exports.publish = publish;

@@ -8,7 +8,10 @@ const consumer = new Kafka.Consumer(client, topics, options);
 const offset = new Kafka.Offset(client);
 
 consumer.on("message", (message) => {
-    console.log(message);
+    var a = JSON.parse(message.value);
+    if(a){
+        console.log("aaaaaaaa", a.todo);
+    }
 });
 
 consumer.on("error", (err) => {
