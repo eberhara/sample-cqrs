@@ -8,7 +8,10 @@ const client = new Kafka.Client(kafkaAddress);
 const topics = [{ topic: "todos", partition: 0 }];
 const options = { autoCommit: false, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024 * 1024 };
 
-const consumer = new Kafka.Consumer(client, topics, options);
+const connect = () => {
+    return new Kafka.Consumer(client, topics, options);
+}
+var consumer = connect();
 const offset = new Kafka.Offset(client);
 
 consumer.on("message", (message) => {
@@ -25,7 +28,11 @@ consumer.on("message", (message) => {
 });
 
 consumer.on("error", (err) => {
-    console.log("error", err);
+    console.log("error with consumer - will retry soon");
+    setTimeout(() => {
+        console.log("Retrying...");
+        consumer = connect();
+    }, 3000);
 });
 
 consumer.on("offsetOutOfRange", (t) => {
@@ -34,7 +41,7 @@ consumer.on("offsetOutOfRange", (t) => {
 
     offset.fetch([topic], (err, offsets) => {
         if (err) {
-            console.error(err);
+            console.log(err);
         }
 
         const min = Math.min(offsets[topic.topic][topic.partition]);

@@ -11,7 +11,7 @@ class ListTodos extends React.Component {
     }
 
     fetchTodos(){
-        fetch('http://localhost:3100/todos', { method: 'GET' }
+        fetch('http://localhost:3300/todos', { method: 'GET' }
             ).then((response) => response.json()
             ).then((result) => {
                 setTimeout(this.fetchTodos.bind(this), 3000);

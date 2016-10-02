@@ -1,24 +1,12 @@
 version: '2'
 services:
-  web:
-    image: dockercloud/hello-world
-    ports:
-      - 8080
-    networks:
-      - front-tier
-      - back-tier
-
-  lb:
-    image: dockercloud/haproxy
+  webapp:
+    container_name: webapp
+    restart: unless-stopped
+    build: 
+      context: ./webapp
     ports:
       - 80:80
-    links:
-      - web
-    networks:
-      - front-tier
-      - back-tier
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock 
 
   command-service:
     container_name: command-service
@@ -31,13 +19,34 @@ services:
       - mongo-command
       - kafka
 
-  query-service:
-    container_name: query-service
+  query-service-lb:
+    container_name: query-service-lb
+    restart: unless-stopped
+    build: 
+      context: ./query-service-lb
+    ports:
+      - 3300:80
+    links:
+      - query-service-1
+      - query-service-2
+
+  query-service-1:
+    container_name: query-service-1
     restart: unless-stopped
     build: 
       context: ./query-service
     ports:
-      - 3100:3100
+      - 3100
+    links:
+      - mongo-query
+
+  query-service-2:
+    container_name: query-service-2
+    restart: unless-stopped
+    build: 
+      context: ./query-service
+    ports:
+      - 3100
     links:
       - mongo-query
   
@@ -55,11 +64,11 @@ services:
     container_name: kafka
     restart: unless-stopped
     ports:
-      - "2181:2181"
-      - "9092:9092"
+      - 2181:2181
+      - 9092:9092
     environment:
       ADVERTISED_PORT: 9092
-      ADVERTISED_HOST: 127.0.0.1
+      ADVERTISED_HOST: kafka
 
   mongo-command:
     image: mongo
@@ -73,10 +82,4 @@ services:
     container_name: mongo-query
     restart: unless-stopped
     ports:
-      - "27018:27017"
-
-networks:
-  front-tier:
-    driver: bridge
-  back-tier:
-    driver: bridge
+      - 27018:27017

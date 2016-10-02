@@ -5,7 +5,7 @@ const url = process.env.NODE_ENV === 'production' ?
 
 module.exports = (cb) => MongoClient.connect(url, (err, db) => {
     if (err) {
-        console.err(err);
+        console.log(err);
     } else {
         cb(db);
     }
