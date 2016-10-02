@@ -16,21 +16,16 @@ server.get('/', (req, res, next) => {
     return next();
 });
 
-server.get('/todos/:id', (req, res, next) => {
-    console.log(`Received new todo: ${todo.text}`);
-
-    MongoClient((db) =>{
-        db.collection('todos').insertOne(todo, (err) => {
+server.get('/todos', (req, res, next) => {
+    MongoClient((db) => {
+        db.collection('todos').find({}).toArray(function(err, docs) {
             db.close();
-
             if(err){
                 res.send(503, 'ERROR');
                 return next();
             }else{
-                producer.publish(todo, (err, result) => {
-                    res.send(200);
-                    return next();
-                });
+                const todos = docs.map((d) => { return { id: d.id, text: d.text };});
+                res.send(200, todos);
             }
         });
     });

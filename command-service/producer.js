@@ -1,7 +1,7 @@
 const Kafka = require("kafka-node");
 
 /* Kafka connection parameters */
-const topic = "topic1";
+const topic = "todos";
 const partition = 0;
 const attributes = 0;
 const requireAcks = 1;
