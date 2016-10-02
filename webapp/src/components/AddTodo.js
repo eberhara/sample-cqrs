@@ -30,7 +30,7 @@ class AddTodo extends React.Component {
     render() {
         return (
             <div>
-                <h2>Add a new todo item... </h2>
+                <h2>Add a new todo item: </h2>
                 <input className="input-text" type="text" value={this.state.todo} onChange={this.handleChange.bind(this)} />
                 <input className="input-button" type="button" value="Add" onClick={this.onAddItem.bind(this)} />
             </div>
